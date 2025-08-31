@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ManjunathTask"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

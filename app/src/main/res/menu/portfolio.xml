@@ -9,9 +9,9 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/action_notifications"
+        android:id="@+id/action_transaction"
         android:icon="@drawable/swap"
-        android:title="Notifications"
+        android:title="transaction"
         app:showAsAction="always" />
 
 </menu>

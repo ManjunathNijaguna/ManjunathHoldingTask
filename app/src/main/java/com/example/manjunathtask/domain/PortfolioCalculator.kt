@@ -28,7 +28,6 @@ object PortfolioCalculator {
         val totalPNL = currentValue - totalInvestment
 
         // 4) Today's P&L = Σ ((close - ltp) * qty)
-        // NOTE: if you want "positive when price goes up today", use (ltp - close) instead.
         val todayPNL = holdings.sumOf { (safeD(it.close) - safeD(it.ltp)) * safeQty(it.quantity) }
 
         // 5) P&L %

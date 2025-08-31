@@ -1,6 +1,5 @@
-package com.example.manjunathtask.ui
+package com.example.manjunathtask.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.manjunathtask.data.model.Holding
@@ -30,19 +29,15 @@ class HoldingsViewModel(
     }
 
     fun refresh() {
-        Log.d("HoldingsViewModel", "refresh called")
         _uiState.value = UiState.Loading
         viewModelScope.launch {
-            Log.d("HoldingsViewModel", "refresh called:: viewModelScope")
             when (val r = repo.getHoldings()) {
                 is Result.Success -> {
-                    Log.d("HoldingsViewModel", "refresh::repo.getHoldings():: Result.Success")
                     val holdings = r.data
                     val summary = PortfolioCalculator.calculate(holdings)
                     _uiState.value = UiState.Success(holdings, summary)
                 }
                 is Result.Error -> {
-                    Log.d("HoldingsViewModel", "refresh::repo.getHoldings():: Result.Error")
                     _uiState.value = UiState.Error(r.message)
                 }
             }

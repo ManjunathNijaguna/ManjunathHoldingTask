@@ -29,7 +29,7 @@ class HoldingsRepository(
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
 
-                // ✅ Save JSON for offline
+                // save JSON for offline
                 prefs.edit().putString(KEY_CACHE, gson.toJson(body)).apply()
 
                 Result.Success(body.data.userHolding.map { it.toDomain() })

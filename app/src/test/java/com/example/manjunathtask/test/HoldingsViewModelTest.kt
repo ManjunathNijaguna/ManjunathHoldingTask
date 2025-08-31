@@ -3,8 +3,8 @@ package com.example.manjunathtask.test
 import com.example.manjunathtask.data.model.Holding
 import com.example.manjunathtask.data.repository.HoldingsRepository
 import com.example.manjunathtask.data.repository.Result
-import com.example.manjunathtask.ui.HoldingsViewModel
-import com.example.manjunathtask.ui.UiState
+import com.example.manjunathtask.ui.viewmodel.HoldingsViewModel
+import com.example.manjunathtask.ui.viewmodel.UiState
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +37,7 @@ class HoldingsViewModelTest {
 
     @Test
     fun `emits Success state when repository returns data`() = runBlocking {
-        val list = listOf(Holding("AAA", 10, 110.0, 100.0, 108.0))
+        val list = listOf(Holding("AAA", 110.0, 100.0, 108.0))
         coEvery { repo.getHoldings() } returns Result.Success(list)
 
         val vm = HoldingsViewModel(repo)
