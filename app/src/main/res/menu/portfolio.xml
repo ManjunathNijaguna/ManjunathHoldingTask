@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/search"
+        android:orderInCategory="100"
+        android:title="search"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_notifications"
+        android:icon="@drawable/swap"
+        android:title="Notifications"
+        app:showAsAction="always" />
+
+</menu>

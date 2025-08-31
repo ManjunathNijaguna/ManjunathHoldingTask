@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ManjunathTask</string>
+    <string name="ltp">LTP</string>
+    <string name="symbol">Symbol</string>
+    <string name="quantity">Quantity</string>
+    <string name="p_and_l">P and L</string>
+    <string name="total_p_l">Profit &amp; Loss*</string>
+    <string name="current_value">Current Value*</string>
+    <string name="total_investment">Total Investment*</string>
+    <string name="today_s_profit_and_loss">Today\'s Profit and Loss*</string>
+    <string name="total_p_l_value">8393.22</string>
+    <string name="portfolio">Portfolio\n</string>
+    <string name="search_symbol">Search symbol</string>
+    <string name="no_holding">You don\'t have any holding yet</string>
+</resources>
