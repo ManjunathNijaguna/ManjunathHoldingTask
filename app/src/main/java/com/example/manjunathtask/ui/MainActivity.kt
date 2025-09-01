@@ -34,7 +34,7 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var adapter: HoldingsAdapter
     private lateinit var viewModel: HoldingsViewModel
 
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupAppBar()
 
-        // ✅ Initialize ViewModel here
+        // Initialize ViewModel here
         viewModel = ViewModelProvider(
             this,
             object : ViewModelProvider.Factory {
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         adapter.filter(query)
     }
 
-    private fun toggleSearch(show: Boolean) {
+    fun toggleSearch(show: Boolean) {
         if (show) {
             //supportActionBar?.hide()
             binding.toolbar.visibility = View.INVISIBLE
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
     }
 
-    private fun observe() {
+    fun observe() {
         lifecycleScope.launch {
             viewModel.uiState.collectLatest { state ->
                 when (state) {

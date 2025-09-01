@@ -41,7 +41,7 @@ class HoldingsRepositoryTest {
     }
 
     @Test
-    fun `getHoldings returns Success from API`() = runBlocking {
+    fun `getHoldings API`() = runBlocking {
 
         val dto = HoldingDTO("AAA", 10, 110.0, 100.0, 108.0)
         val response = HoldingsResponse(HoldingsData(listOf(dto)))
