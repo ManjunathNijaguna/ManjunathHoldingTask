@@ -1,4 +1,4 @@
-package com.example.manjunathtask.data.model
+package com.example.manjunathtask.domain.model
 
 data class Holding(
     val symbol: String = "",

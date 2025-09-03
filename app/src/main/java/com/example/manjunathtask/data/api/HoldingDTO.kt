@@ -1,6 +1,5 @@
 package com.example.manjunathtask.data.api
 
-import com.example.manjunathtask.data.model.Holding
 import com.google.gson.annotations.SerializedName
 
 data class HoldingsResponse(
@@ -19,10 +18,3 @@ data class HoldingDTO(
     @SerializedName("close") val close: Double
 )
 
-fun HoldingDTO.toDomain(): Holding = Holding(
-    symbol = symbol,
-    quantity = quantity,
-    ltp = ltp,
-    avgPrice = avgPrice,
-    close = close
-)

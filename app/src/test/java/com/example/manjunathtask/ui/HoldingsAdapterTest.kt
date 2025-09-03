@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manjunathtask.R
-import com.example.manjunathtask.data.model.Holding
+import com.example.manjunathtask.domain.model.Holding
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Assert.*

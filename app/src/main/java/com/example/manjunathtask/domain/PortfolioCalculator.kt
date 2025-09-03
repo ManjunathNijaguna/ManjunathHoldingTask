@@ -1,6 +1,6 @@
 package com.example.manjunathtask.domain
 
-import com.example.manjunathtask.data.model.Holding
+import com.example.manjunathtask.domain.model.Holding
 
 data class PortfolioSummary(
     val currentValue: Double,

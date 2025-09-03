@@ -2,14 +2,15 @@ package com.example.manjunathtask.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.manjunathtask.data.model.Holding
-import com.example.manjunathtask.data.repository.HoldingsRepository
 import com.example.manjunathtask.domain.PortfolioCalculator
+import com.example.manjunathtask.domain.model.Holding
 import com.example.manjunathtask.domain.PortfolioSummary
-import com.example.manjunathtask.data.repository.Result
+import com.example.manjunathtask.domain.usecase.GetHoldingsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed class UiState {
     object Loading : UiState()
@@ -17,31 +18,25 @@ sealed class UiState {
     data class Error(val message: String) : UiState()
 }
 
-class HoldingsViewModel(
-    private val repo: HoldingsRepository
+class HoldingsViewModel @Inject constructor(
+    private val getHoldingsUseCase: GetHoldingsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
-    val uiState: StateFlow<UiState> = _uiState
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    init {
-        refresh()
-    }
-
-    fun refresh() {
-        _uiState.value = UiState.Loading
+    fun loadHoldings() {
         viewModelScope.launch {
-            when (val r = repo.getHoldings()) {
-                is Result.Success -> {
-                    val holdings = r.data
-                    val summary = PortfolioCalculator.calculate(holdings)
-                    _uiState.value = UiState.Success(holdings, summary)
-                }
-                is Result.Error -> {
-                    _uiState.value = UiState.Error(r.message)
-                }
+            _uiState.value = UiState.Loading
+            try {
+                val result = getHoldingsUseCase()
+                val summary = PortfolioCalculator.calculate(result)
+                _uiState.value = UiState.Success(result, summary)
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(e.localizedMessage ?: "Something went wrong")
             }
         }
     }
 }
+
 

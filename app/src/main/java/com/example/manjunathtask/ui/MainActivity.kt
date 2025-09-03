@@ -2,9 +2,6 @@ package com.example.manjunathtask.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.AbsoluteSizeSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,57 +9,47 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.manjunathtask.HoldingApplication
 import com.example.manjunathtask.R
-import com.example.manjunathtask.data.api.RetrofitClient
-import com.example.manjunathtask.data.repository.HoldingsRepository
 import com.example.manjunathtask.databinding.ActivityMainBinding
 import com.example.manjunathtask.ui.adapter.HoldingsAdapter
 import com.example.manjunathtask.ui.viewmodel.HoldingsViewModel
 import com.example.manjunathtask.ui.viewmodel.UiState
-import com.example.manjunathtask.utils.Utility
 import com.example.manjunathtask.utils.Utility.formatNumber
 import com.example.manjunathtask.utils.Utility.formatWithPercentage
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.text.NumberFormat
-import java.util.Locale
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: HoldingsViewModel
     lateinit var binding: ActivityMainBinding
     private lateinit var adapter: HoldingsAdapter
-    private lateinit var viewModel: HoldingsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (application as HoldingApplication).appComponent.inject(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupAppBar()
 
         // Initialize ViewModel here
-        viewModel = ViewModelProvider(
-            this,
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    val prefs = getSharedPreferences("app_cache", Context.MODE_PRIVATE)
-                    val repo = HoldingsRepository(RetrofitClient.apiService, prefs, Gson())
-                    return HoldingsViewModel(repo) as T
-                }
-            }
-        )[HoldingsViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[HoldingsViewModel::class.java]
+        viewModel.loadHoldings()
 
         adapter = HoldingsAdapter { /* expand collapse callback */ }
         binding.rvHoldings.layoutManager = LinearLayoutManager(this)
         binding.rvHoldings.adapter = adapter
 
         binding.swipeContainer.setOnRefreshListener {
-            viewModel.refresh()
+            viewModel.loadHoldings()
         }
         binding.summaryToggleRow.setOnClickListener {
             if (binding.expandedSection.visibility == View.VISIBLE) {
@@ -96,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.ivClearSearch.setOnClickListener {
             binding.etSearch.setText("")
-            viewModel.refresh()
+            viewModel.loadHoldings()
             toggleSearch(false)
         }
     }

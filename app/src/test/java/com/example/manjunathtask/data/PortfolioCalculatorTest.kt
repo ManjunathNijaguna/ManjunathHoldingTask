@@ -1,7 +1,7 @@
-package com.example.manjunathtask.test
+package com.example.manjunathtask.data
 
-import com.example.manjunathtask.data.model.Holding
 import com.example.manjunathtask.domain.PortfolioCalculator
+import com.example.manjunathtask.domain.model.Holding
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

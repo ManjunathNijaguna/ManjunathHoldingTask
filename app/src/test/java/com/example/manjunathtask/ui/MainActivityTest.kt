@@ -1,7 +1,9 @@
 package com.example.manjunathtask.ui
 
 import android.app.Application
-import com.example.manjunathtask.data.repository.HoldingsRepository
+import android.view.View
+import com.example.manjunathtask.HoldingApplication
+import com.example.manjunathtask.domain.usecase.GetHoldingsUseCase
 import com.example.manjunathtask.ui.viewmodel.HoldingsViewModel
 import com.example.manjunathtask.ui.viewmodel.UiState
 import io.mockk.*
@@ -24,13 +26,13 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(
     sdk = [34],
-    application = Application::class,
+    application = HoldingApplication::class,
     packageName = "com.example.manjunathtask"
 )
 class MainActivityTest {
 
     private val dispatcher = StandardTestDispatcher()
-    private lateinit var repo: HoldingsRepository
+    private lateinit var useCase: GetHoldingsUseCase
     private lateinit var viewModel: HoldingsViewModel
     private lateinit var activity: MainActivity
 
@@ -38,12 +40,14 @@ class MainActivityTest {
     fun setup() {
         Dispatchers.setMain(dispatcher)
 
-        repo = mockk(relaxed = true)
-        viewModel = spyk(HoldingsViewModel(repo))
+        // mock usecase + spy real ViewModel
+        useCase = mockk(relaxed = true)
+        viewModel = spyk(HoldingsViewModel(useCase))
 
+        // build activity
         activity = Robolectric.buildActivity(MainActivity::class.java).setup().get()
 
-        // inject fake ViewModel
+        // replace private viewModel field with our spy
         val field = MainActivity::class.java.getDeclaredField("viewModel")
         field.isAccessible = true
         field.set(activity, viewModel)
@@ -73,8 +77,8 @@ class MainActivityTest {
         activity.observe()
         dispatcher.scheduler.advanceUntilIdle()
 
-        assert(activity.binding.tvNoHolding.visibility == android.view.View.VISIBLE)
-        assert(activity.binding.summaryCard.visibility == android.view.View.GONE)
+        assert(activity.binding.tvNoHolding.visibility == View.VISIBLE)
+        assert(activity.binding.summaryCard.visibility == View.GONE)
     }
 
     @Test
@@ -82,8 +86,8 @@ class MainActivityTest {
         activity.runOnUiThread {
             activity.toggleSearch(true)
         }
-        assert(activity.binding.toolbar.visibility == android.view.View.INVISIBLE)
-        assert(activity.binding.searchBar.visibility == android.view.View.VISIBLE)
+        assert(activity.binding.toolbar.visibility == View.INVISIBLE)
+        assert(activity.binding.searchBar.visibility == View.VISIBLE)
     }
 
     @Test

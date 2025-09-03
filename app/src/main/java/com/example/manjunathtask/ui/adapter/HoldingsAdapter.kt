@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.manjunathtask.R
-import com.example.manjunathtask.data.model.Holding
+import com.example.manjunathtask.domain.model.Holding
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
